@@ -93,7 +93,8 @@ class TestDBStorage(unittest.TestCase):
         new_state = State(**state_data)
         models.storage.new(new_state)
         session = models.storage._DBStorage__session
-        retrieved_state = session.query(State).filter_by(id=new_state).first()
+        retrieved_state = session.query(State).filter_by(
+                            id=new_state.id).first()
         self.assertEqual(retrieved_state.id, new_state.id)
         self.assertEqual(retrieved_state.name, new_state.name)
         self.assertIsNone(retrieved_state)
@@ -106,10 +107,11 @@ class TestDBStorage(unittest.TestCase):
         models.storage.new(new_state)
         models.storage.save()
         session = models.storage._DBStorage__session
-        retrieved_state = session.query(State).filter_by(id=new_state).first()
+        retrieved_state = session.query(State).filter_by(
+                            id=new_state.id).first()
         self.assertEqual(retrieved_state.id, new_state.id)
         self.assertEqual(retrieved_state.name, new_state.name)
-        self.assertIsNone(retrieved_state)
+        self.assertIsNotNone(retrieved_state)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
@@ -118,6 +120,8 @@ class TestDBStorage(unittest.TestCase):
         storage.reload()
         state_data = {"name": "Nairobi"}
         state_instance = State(**state_data)
+        storage.new(state_instance)
+        storage.save()
         retrieved_state = storage.get(State, state_instance.id)
         self.assertEqual(state_instance, retrieved_state)
         fake_state_id = storage.get(State, 'fake_id')
@@ -126,4 +130,16 @@ class TestDBStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
         """Test method for obtaining an instance db storage"""
-        pass
+        storage = models.storage
+        storage.reload()
+        state_data = {"name": "Nairobi"}
+        state_instance = State(**state_data)
+        storage.new(state_instance)
+        city_data = {"name": "Rocky", "state_id": state_instance.id}
+        city_instance = City(**city_data)
+        storage.new(city_instance)
+        storage.save()
+        state_occurence = storage.count(State)
+        self.assertEqual(state_occurence, len(storage.all(State)))
+        all_occurence = storage.count()
+        self.assertEqual(all_occurence, len(storage.all()))
