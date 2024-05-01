@@ -15,6 +15,7 @@ app.register_blueprint(app_views)
 @app.teardown_appcontext
 def teardown_engine(exception):
     """
+    Closes the database connection at the end of the request.
     """
     storage.close()
 
@@ -22,6 +23,7 @@ def teardown_engine(exception):
 @app.errorhandler(404)
 def not_found(error):
     """
+    Handles 404 errors by returning a JSON response.
     """
     response = {"error": "Not found"}
     return jsonify(response), 404

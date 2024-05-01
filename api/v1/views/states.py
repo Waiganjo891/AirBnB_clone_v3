@@ -21,6 +21,7 @@ def get_all_status():
 @app_views.route('/states/<state_id>', strict_slashes=False)
 def get_state(state_id):
     """
+    Retrieves a state object by its ID.
     """
     state = storage.get(State, state_id)
     if state:
@@ -32,6 +33,7 @@ def get_state(state_id):
 @app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
 def delete_state(state_id):
     """
+    Deletes a state object by its ID.
     """
     state = storage.get(State, state_id)
     if state:
@@ -45,6 +47,7 @@ def delete_state(state_id):
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
     """
+    Creates a new state object.
     """
     if request.content_type != 'application/json':
         return abort(404, 'Not a JSON')
@@ -61,6 +64,7 @@ def create_state():
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
 def update_state(state_id):
     """
+    Updates a state object by its ID.
     """
     if request.content_type != 'application/json':
         return abort(400, 'Not a JSON')
