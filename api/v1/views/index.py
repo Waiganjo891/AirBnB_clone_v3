@@ -7,7 +7,7 @@ from api.v1.views import app_views
 from models import storage
 
 
-@app_views.route('/status')
+@app_views.route('/status', methods=['GET'])
 def api_status():
     """
     Returns a JSON response for RESTFUL API health
@@ -16,7 +16,7 @@ def api_status():
     return jsonify(response)
 
 
-@app_views.route('/stats')
+@app_views.route('/stats', methods=['GET'])
 def get_stats():
     """
     Returns statistics about objects stored in the database
