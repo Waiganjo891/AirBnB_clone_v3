@@ -8,7 +8,7 @@ from models import storage
 from api.v1.views import app_views
 
 
-@app_views.route('/states', strict_slashes=False)
+@app_views.route('/states', methods=['GET'], strict_slashes=False)
 def get_all_status():
     """
     Retrieves the list of all state objects
@@ -18,7 +18,7 @@ def get_all_status():
     return jsonify(state_list)
 
 
-@app_views.route('/states/<state_id>', strict_slashes=False)
+@app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_state(state_id):
     """
     Retrieves a state object by its ID.
