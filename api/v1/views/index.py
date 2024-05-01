@@ -19,6 +19,7 @@ def api_status():
 @app_views.route('/stats')
 def get_stats():
     """
+    Returns statistics about objects stored in the database
     """
     stats = {
         'amenities': storage.count('Amenity'),
